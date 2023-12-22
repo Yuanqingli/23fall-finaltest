@@ -1,12 +1,13 @@
 let displayColorImage = false;
+let currentPrompt = "";
 
 class Figure {
   constructor(name, bwimagePath, imagePath, naturalColor, voicePrompt) {
     this.name = name;
-    this.bwimage = loadImage(bwimagePath); // Load the black and white image
+    this.bwimage = loadImage(bwimagePath); 
     this.image = loadImage(imagePath);
     this.naturalColor = naturalColor;
-    this.voicePrompt = voicePrompt; // The voice prompt text
+    this.voicePrompt = voicePrompt; 
   }
 
   speakPrompt() {
@@ -20,7 +21,7 @@ let buses = [];
 let mSpeech;
 
 function setup() {
-  createCanvas(windowWidth,windowHeight); // Create a canvas of the desired size
+  createCanvas(windowWidth,windowHeight); 
 
   // Initialize the speech object
   mSpeech = new p5.Speech();
@@ -31,8 +32,6 @@ function setup() {
   figures.push(new Figure("Pepper", "bwpepper.png", "greenpepper.png",'green', "pepper"));
   figures.push(new Figure("Moon", "bwmoon.png", "moon.png",'yellow', "moon"));
   figures.push(new Figure("Chestnut", "bwchestnut.png", "chestnut.png",'brown', "chestnut"));
-
-  
 
   // Initialize buses
   buses = [
@@ -46,10 +45,6 @@ function setup() {
   startGame();
 }
 
-// This standalone function can be used to speak any prompt
-function sayPrompt(word) {
-  mSpeech.speak("What is the color of " + word + "?");
-}
 
 function draw() {
   background(255); 
@@ -65,6 +60,11 @@ function draw() {
     }
   }
 
+// Prompt text
+fill(0); 
+textSize(24); 
+text(currentPrompt, 50, 50); 
+
   // Draw buses
   drawBuses();
 }
@@ -73,7 +73,7 @@ function startGame() {
   displayColorImage = false;
   selectedFigure = selectRandomFigure(figures);
   selectedFigure.speakPrompt(figures); 
-
+  currentPrompt = "What is the color of " + selectedFigure.voicePrompt + "?";
 }
 
 function selectRandomFigure(figures) {
@@ -128,18 +128,42 @@ function checkSelection(selectedColor) {
 function handleCorrectSelection() {
   // Display the figure in its natural color
   displayColorImage = true;
-  mSpeech.speak("Fantastic job! You got it right!");
+  currentPrompt = "Fantastic job! You got it right!";
+  mSpeech.speak(currentPrompt);
+
   // Implement the logic to display the figure in its natural color
-  console.log("Fantastic job! You got it right!");
-  // Proceed to the next figure after a brief pause
-  setTimeout(startGame, 3000); // Adjust the delay as needed
+  console.log(currentPrompt);
+
+  // Proceed to the next figure after a pause
+  setTimeout(() => {
+    startGame();
+    currentPrompt = "What is the color of " + selectedFigure.voicePrompt + "?";
+  }, 3000); 
 }
 
 // Handle incorrect selection
 function handleIncorrectSelection() {
   // Prompt the child to try again or show a hint
   displayColorImage = false;
-  mSpeech.speak("Let's try one more time!");
+  currentPrompt = "Let's try one more time!";
+  mSpeech.speak(currentPrompt);
   // Implement the logic for incorrect selection
-  console.log("Incorrect selection. Let's try one more time!");
+  console.log(currentPrompt);
+}
+
+// End the game
+function endGame() {
+  // Display a summary of correct and incorrect answers
+  displaySummary();
+
+  // Provide an option to restart the game
+  displayRestartOption();
+}
+
+// Function to restart the game
+function restartGame() {
+  // Reset game variables
+  resetGameVariables();
+  // Start the game again
+  startGame();
 }

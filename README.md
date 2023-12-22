@@ -1,4 +1,15 @@
-# p5.js multi sketch template
+## File 0 for test
+Key "g" for green;  
 
-By putting different sketch.js and index.html files in directories we can more easily switch between multiple experiments.
+Key "r" for red; 
 
+Key "y" for yellow; 
+
+Key "b" for brown;
+ 
+## Next steps:
+1. p5js: end the game, count the correct and incorrect answers
+
+2. Add more figures
+
+3. connect to Arduino buttons
