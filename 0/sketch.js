@@ -41,7 +41,6 @@ function setup() {
     { color: "brown" },
   ];
 
-  // Start the game
   startGame();
 }
 
@@ -52,21 +51,17 @@ function draw() {
   // Draw the selected figure
   if (selectedFigure) {
     if (displayColorImage) {
-      // Display the color image
       image(selectedFigure.image, 150, 150, 500, 500);
     } else {
-      // Display the black and white image
       image(selectedFigure.bwimage, 150, 150, 500, 500);
     }
   }
 
-// Prompt text
 fill(0); 
 textSize(24); 
 text(currentPrompt, 50, 50); 
 
-  // Draw buses
-  drawBuses();
+drawBuses();
 }
 
 function startGame() {
@@ -86,18 +81,14 @@ function drawBuses() {
   const busHeight = 100;
   const gap = 30; 
 
-  // Calculate total height needed for all buses and gaps
   const totalHeight = buses.length * busHeight + (buses.length - 1) * gap;
 
-  // Starting Y position to center the buses vertically
   const startY = (windowHeight - totalHeight) / 2;
 
   buses.forEach((bus, index) => {
-    // Calculate the Y position of each bus
     const yPos = startY + index * (busHeight + gap);
 
     fill(bus.color);
-    // X position is set to keep the bus inside the canvas, adjust as needed
     const xPos = windowWidth - busWidth - 80; 
     rect(xPos, yPos, busWidth, busHeight);
   });
@@ -131,9 +122,6 @@ function handleCorrectSelection() {
   currentPrompt = "Fantastic job! You got it right!";
   mSpeech.speak(currentPrompt);
 
-  // Implement the logic to display the figure in its natural color
-  console.log(currentPrompt);
-
   // Proceed to the next figure after a pause
   setTimeout(() => {
     startGame();
@@ -143,12 +131,9 @@ function handleCorrectSelection() {
 
 // Handle incorrect selection
 function handleIncorrectSelection() {
-  // Prompt the child to try again or show a hint
   displayColorImage = false;
   currentPrompt = "Let's try one more time!";
   mSpeech.speak(currentPrompt);
-  // Implement the logic for incorrect selection
-  console.log(currentPrompt);
 }
 
 // End the game
